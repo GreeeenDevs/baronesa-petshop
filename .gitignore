@@ -40,6 +40,5 @@ out/
 .kotlin
 
 ### Firebase ###
-firebase/baronesa-petshop-firebase-adminsdk.json
-
+src/main/resources/firebase/baronesa-petshop-firebase-adminsdk.json
 
