@@ -38,3 +38,8 @@ out/
 
 ### Kotlin ###
 .kotlin
+
+### Firebase ###
+**/src/main/resources/firebase/baronesa-petshop-firebase0adminsdk.json
+
+
