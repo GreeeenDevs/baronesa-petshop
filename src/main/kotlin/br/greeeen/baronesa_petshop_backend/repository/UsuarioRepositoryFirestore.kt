@@ -2,11 +2,10 @@ package br.greeeen.baronesa_petshop_backend.repository
 
 import br.greeeen.baronesa_petshop_backend.model.Usuario
 import com.google.cloud.firestore.Firestore
-import com.google.cloud.firestore.Query
 import org.springframework.stereotype.Component
 
 @Component
-class UsuarioFirestoreRepository(
+class UsuarioRepositoryFirestore(
     private val firestore: Firestore
 ) : UsuarioRepository {
 
