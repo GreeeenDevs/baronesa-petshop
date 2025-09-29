@@ -1,6 +1,5 @@
-package br.greeeen.baronesa_petshop_backend.usuario.model
+package br.greeeen.baronesa_petshop_backend.model
 
-import br.greeeen.baronesa_petshop_backend.usuario.model.Endereco
 import com.google.cloud.firestore.annotation.DocumentId
 import com.google.cloud.firestore.annotation.ServerTimestamp
 import java.util.Date

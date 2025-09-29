@@ -1,4 +1,4 @@
-package br.greeeen.baronesa_petshop_backend.usuario.model
+package br.greeeen.baronesa_petshop_backend.model
 
 data class Endereco(
     var id: String? = null, // Pode ser útil ter um ID para cada endereço se o usuário tiver muitos.
@@ -10,4 +10,5 @@ data class Endereco(
     var bairro: String = "",
     var cidade: String = "",
     var estado: String = "", // Sigla do estado, ex: "SP"var principal: Boolean = false // Indica se é o endereço principal de entrega
+    var principal: Boolean = true
 )
