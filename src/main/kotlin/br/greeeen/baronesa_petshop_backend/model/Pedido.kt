@@ -1,19 +1,10 @@
 package br.greeeen.baronesa_petshop_backend.model
 
+import br.greeeen.baronesa_petshop_backend.enum.StatusPedido
 import com.google.cloud.firestore.annotation.DocumentId
 import com.google.cloud.firestore.annotation.ServerTimestamp
 import java.math.BigDecimal
 import java.util.Date
-
-enum class StatusPedido {
-    AGUARDANDO_PAGAMENTO,
-    PAGAMENTO_APROVADO,
-    PAGAMENTO_RECUSADO,
-    EM_SEPARACAO,
-    ENVIADO,
-    ENTREGUE,
-    CANCELADO
-}
 
 data class Pedido(
     @DocumentId
