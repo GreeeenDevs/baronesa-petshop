@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository
 @Repository
 interface UsuarioRepository {
     fun buscarPorId(id: String): Usuario?
-    
+
     fun buscarPorEmail(email: String): Usuario?
 
     fun salvar(usuario: Usuario): Usuario
