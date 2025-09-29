@@ -1,70 +1,82 @@
 # Baronesa Petshop E-commerce Backend
 
-Este documento serve como a documentação técnica e de referência para o backend da plataforma de e-commerce Baronesa Petshop, desenvolvido em **Kotlin** com **Spring Boot** e utilizando **Google Firestore (Firebase Admin SDK)** como banco de dados NoSQL.
+Este documento serve como a documentação técnica e de referência para o backend da plataforma de e-commerce Baronesa Petshop.
+O projeto segue uma arquitetura em camadas (Model, Repository, Service, Controller), utilizando **Kotlin** com **Spring Boot** e **Google Firestore (Firebase Admin SDK)** para persistência.
 
 ## 1. Arquitetura e Estrutura do Projeto
 
-O projeto segue uma arquitetura em camadas (Model, Repository, Service, Controller), organizada em pacotes com nomenclatura em **Português**, conforme convenções estabelecidas.
+A estrutura de pacotes segue o padrão Spring, com nomenclatura em **Português**, garantindo clareza e manutenção.
 
-### Estrutura de Pacotes
-
-| Pacote | Responsabilidade | Convenção de Nomenclatura |
-| :--- | :--- | :--- |
-| `model` | Classes de domínio e entidades do Firestore. | `Usuario.kt`, `Produto.kt` |
-| `repository` | Contratos e implementações de acesso a dados (Firestore). | `UsuarioRepository`, `ProdutoRepositoryFirestore` |
-| `service` | Lógica de Negócio e validações (RFs). | `UsuarioService`, `ProdutoServiceImpl` |
-| `controller` | Ponto de entrada da API REST (endpoints HTTP). | `UsuarioController`, `ProdutoController` |
-| `dto` | Objetos de Transferência de Dados (Input/Output da API). | `RegistroUsuarioDTO`, `ProdutoRespostaDTO` |
-| `exception` | Exceções customizadas (`404`, `400`). | `ExcecaoRecursoNaoEncontrado` |
-| `config` | Configurações de terceiros (Ex: Firebase Admin SDK). | `ConfiguracaoFirebase` |
+| Pacote | Responsabilidade |
+| :--- | :--- |
+| `model` | Classes de domínio e entidades do Firestore. |
+| `repository` | Contratos e implementações de acesso a dados (Firestore). |
+| `service` | Lógica de Negócio e validações. |
+| `controller` | Ponto de entrada da API REST (endpoints HTTP). |
+| `dto` | Objetos de Transferência de Dados (Input/Output da API). |
+| `exception` | Exceções customizadas (`404`, `400`). |
+| `config` | Configurações de terceiros (Firebase Admin SDK, WebClient). |
+| `security` | Configuração de Autenticação/Autorização (Spring Security + Firebase). |
+| `integracao` | Clientes HTTP e DTOs para APIs externas (Frete, Pagamento). |
 
 ### Tecnologias Principais
 
 * **Linguagem:** Kotlin
 * **Framework:** Spring Boot 3
 * **Banco de Dados:** Google Firestore (via Firebase Admin SDK)
-* **Segurança:** Spring Security (será implementado na próxima fase)
+* **Comunicação Externa:** Spring WebFlux WebClient (Não-bloqueante)
+* **Segurança:** Spring Security com Firebase ID Token.
 
-## 2. Configuração Inicial
+## 2. Módulos Implementados e Endpoints
 
-Para rodar o projeto, o Firebase Admin SDK precisa ser inicializado. A configuração espera o arquivo de credenciais em:
+Os módulos centrais da plataforma estão prontos, seguindo os Requisitos Funcionais (RFs) definidos.
 
-`src/main/resources/firebase/baronesa-petshop-firebase-adminsdk.json`
+### 2.1. Módulo de Usuários (Clientes)
 
-## 3. Módulos Desenvolvidos
+**Gestão de Conta e Endereços (RF001, RF003, RF004).**
 
-### 3.1. Módulo de Gestão de Usuários (Clientes)
-
-**Responsabilidade:** Cadastro, visualização, edição de dados e gerenciamento de endereços (RF001, RF003, RF004).
-
-| Método HTTP | Endpoint | Descrição | RFs |
+| Método HTTP | Endpoint | Descrição | Restrição |
 | :--- | :--- | :--- | :--- |
-| `POST` | `/api/v1/clientes/registro` | **Registro de Novo Cliente** (Público). | RF001 |
-| `GET` | `/api/v1/clientes/{id}` | Busca os dados cadastrais do cliente. (Privado) | RF003 |
-| `PUT` | `/api/v1/clientes/{id}` | Atualiza nome, e-mail e telefone do cliente. (Privado) | RF003 |
-| `POST` | `/api/v1/clientes/{id}/enderecos` | Adiciona um novo endereço à conta do cliente. (Privado) | RF004 |
-| `DELETE` | `/api/v1/clientes/{id}/enderecos/{idEndereco}` | Remove um endereço específico. (Privado) | RF004 |
-| `PATCH` | `/api/v1/clientes/{id}/enderecos/{idEndereco}/principal` | Define um endereço como principal de entrega. (Privado) | RF004 |
+| `POST` | `/api/v1/clientes/registro` | **Registro de Novo Cliente.** | Público |
+| `GET` | `/api/v1/clientes/{id}` | Busca os dados cadastrais do cliente. | Autenticado |
+| `PUT` | `/api/v1/clientes/{id}` | Atualiza nome, e-mail e telefone do cliente. | Autenticado |
+| `POST` | `/api/v1/clientes/{id}/enderecos` | Adiciona um novo endereço. | Autenticado |
+| `PATCH` | `/api/v1/clientes/{id}/enderecos/{idEndereco}/principal` | Define um endereço como principal. | Autenticado |
 
-### 3.2. Módulo de Catálogo e Produtos
+### 2.2. Módulo de Catálogo e Produtos
 
-**Responsabilidade:** Exibição do catálogo público e gerenciamento de produtos e estoque pelo Admin (RF005, RF006, RF007, RF008, RF019, RF020).
+**Exibição e Gestão (RF005, RF006, RF007, RF008, RF019, RF020).**
 
-| Método HTTP | Endpoint | Descrição | Restrição | RFs |
-| :--- | :--- | :--- | :--- | :--- |
-| `GET` | `/api/v1/produtos` | Lista/Filtra produtos (termo de busca, categorias). | Público | RF006, RF007 |
-| `GET` | `/api/v1/produtos/{id}` | Busca os detalhes de um produto específico. | Público | RF008 |
-| `POST` | `/api/v1/produtos` | Adiciona um novo produto ao catálogo. | **ADMIN** | RF019 |
-| `PUT` | `/api/v1/produtos/{id}` | Atualiza todos os dados de um produto existente. | **ADMIN** | RF019 |
-| `DELETE` | `/api/v1/produtos/{id}` | Remove um produto do catálogo. | **ADMIN** | RF019 |
-| `PATCH` | `/api/v1/produtos/{id}/estoque` | Atualiza a quantidade em estoque. | **ADMIN** | RF020 |
+| Método HTTP | Endpoint | Descrição | Restrição |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/api/v1/produtos` | Lista/Filtra produtos (termo de busca, categorias). | Público |
+| `GET` | `/api/v1/produtos/{id}` | Busca os detalhes de um produto. | Público |
+| `POST` | `/api/v1/produtos` | Adiciona um novo produto ao catálogo. | `ROLE_ADMIN` |
+| `PUT` | `/api/v1/produtos/{id}` | Atualiza um produto existente. | `ROLE_ADMIN` |
+| `PATCH`| `/api/v1/produtos/{id}/estoque`| Atualiza a quantidade em estoque. | `ROLE_ADMIN` |
 
----
+### 2.3. Módulo de Carrinho e Checkout
 
-## 4. Próximos Passos (Próxima Fase)
+**Gestão do Carrinho e Finalização do Pedido (RF009, RF010, RF011-RF016).**
 
-A próxima fase de desenvolvimento será dedicada ao módulo de Segurança, abordando:
+| Método HTTP | Endpoint | Descrição | Restrição |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/api/v1/carrinho` | Busca o carrinho do usuário logado. | Autenticado |
+| `POST`| `/api/v1/carrinho/itens`| Adiciona um item ao carrinho (RF009). | Autenticado |
+| `PUT` | `/api/v1/carrinho/itens/{idProduto}` | Altera a quantidade de um item (RF010). | Autenticado |
+| `DELETE`| `/api/v1/carrinho/itens/{idProduto}` | Remove um item do carrinho (RF009). | Autenticado |
+| `POST` | `/api/v1/pedidos/checkout/previa` | **Calcula Frete e Cupom** para visualização (RF011, RF014). | Autenticado |
+| `POST` | `/api/v1/pedidos/checkout/finalizar` | Cria o pedido, processa o pagamento e atualiza o estoque (RF012, RF013). | Autenticado |
+| `GET` | `/api/v1/pedidos` | Lista o histórico de pedidos do usuário (RF015). | Autenticado |
+| `PATCH`| `/api/v1/pedidos/{id}/status` | Atualiza o status do pedido (Gerenciamento Admin). | `ROLE_ADMIN` |
 
-1.  **Spring Security:** Configuração da segurança base.
-2.  **Firebase Authentication:** Implementação do login de clientes (RF002).
-3.  **Autorização:** Proteção dos endpoints administrativos (ex: `POST /api/v1/produtos`) com base na função do usuário.
+## 3. Próximos Passos (Requisitos Faltantes)
+
+Os seguintes requisitos precisam ser desenvolvidos para a conclusão total do sistema (conforme Auditoria):
+
+1.  **Módulo de Gestão de Cupons (RF022):** Implementação de Model, Repo, Service e Controller dedicados para criar e gerenciar cupons dinâmicos.
+2.  **Painel Administrativo - Dashboard (RF023):** Criação de relatórios de vendas e acesso.
+3.  **Assinaturas (RF018):** O módulo de compras recorrentes ainda precisa ser implementado.
+4.  **Notificações (RF017):** Implementação do serviço de envio de e-mails.
+
+O desenvolvimento continuará com foco na construção do **Módulo de Gestão de Cupons** e do **Painel Administrativo**.
