@@ -12,12 +12,12 @@ import java.io.IOException
 import java.io.InputStream
 
 @Configuration
-class ConfiguracaoFirebase {
+class FirebaseConfig {
     private val CAMINHOCHAVE = "firebase/baronesa-petshop-firebase-adminsdk.json"
 
     @Bean
     fun inicializarFirebaseApp(): FirebaseApp {
-        val inputStream: InputStream = ConfiguracaoFirebase::class.java.classLoader.getResourceAsStream(CAMINHOCHAVE)
+        val inputStream: InputStream = FirebaseConfig::class.java.classLoader.getResourceAsStream(CAMINHOCHAVE)
             ?: throw IOException("Arquivo da chave de conta de serviço do Firebase não encontrado em 'src/main/resources/$CAMINHOCHAVE'. " +
                     "Faça o download no Console do Firebase > Configurações do Projeto > Contas de Serviço e coloque-o na pasta resources.")
 
