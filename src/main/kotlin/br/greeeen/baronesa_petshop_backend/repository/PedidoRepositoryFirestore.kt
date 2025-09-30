@@ -2,7 +2,7 @@ package br.greeeen.baronesa_petshop_backend.repository
 
 import br.greeeen.baronesa_petshop_backend.exception.RecursoNaoEncontradoException
 import br.greeeen.baronesa_petshop_backend.model.Pedido
-import br.greeeen.baronesa_petshop_backend.model.StatusPedido
+import br.greeeen.baronesa_petshop_backend.enum.StatusPedido
 import com.google.cloud.firestore.Firestore
 import org.springframework.stereotype.Component
 import java.util.Date

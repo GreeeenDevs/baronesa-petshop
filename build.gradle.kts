@@ -48,6 +48,10 @@ kotlin {
 	}
 }
 
+tasks.named<org.springframework.boot.gradle.tasks.run.BootRun>("bootRun") {
+	mainClass.set("br.greeeen.baronesa_petshop_backend.BaronesaPetshopBackendApplicationKt")
+}
+
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
