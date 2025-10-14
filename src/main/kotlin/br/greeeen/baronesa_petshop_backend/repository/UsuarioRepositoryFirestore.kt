@@ -43,4 +43,9 @@ class UsuarioRepositoryFirestore(
     override fun deletar(id: String) {
         firestore.collection(NOMECOLECAO).document(id).delete().get()
     }
+
+    override fun buscarTodos(): List<Usuario> {
+        val resultado = firestore.collection(NOMECOLECAO).get().get()
+        return resultado.documents.mapNotNull { it.toObject(Usuario::class.java) }
+    }
 }

@@ -7,23 +7,19 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Mono
+import java.util.UUID
+
+//@Qualifier("webClientPagamento") private val webClientPagamento: WebClient
 
 @Component
-class ClientePagamento(
-    @Qualifier("webClientPagamento") private val webClientPagamento: WebClient
-) {
+class ClientePagamento() {
 
     fun processar(requisicao: TransacaoRequisicaoDTO): TransacaoRespostaDTO {
-        return webClientPagamento.post()
-            .uri("/payments") // Endpoint real do Mercado Pago ou outro gateway
-            .bodyValue(requisicao)
-            .retrieve()
-            .onStatus({ status -> status.isError }) { response ->
-                response.bodyToMono(String::class.java).flatMap { erroCorpo ->
-                    Mono.error(NegocioException("Recusa de Pagamento (Status ${response.statusCode()}): ${erroCorpo}"))
-                }
-            }
-            .bodyToMono(TransacaoRespostaDTO::class.java)
-            .block() ?: throw NegocioException("Resposta inválida ou nula da API de Pagamento.")
+        println("Aviso: A chamada à API de Pagamento está desabilitada. Usando valor mockado.")
+        return TransacaoRespostaDTO(
+            idTransacaoGateway = "MOCK-TRANSACTION-${UUID.randomUUID()}",
+            statusTransacao = "APPROVED",
+            mensagem = "Pagamento mockado com sucesso."
+        )
     }
 }

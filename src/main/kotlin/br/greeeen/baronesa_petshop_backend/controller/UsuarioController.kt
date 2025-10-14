@@ -26,6 +26,13 @@ class UsuarioController(
             .body(respostaDTO)
     }
 
+    @GetMapping
+    fun listarTodosUsuarios(): ResponseEntity<List<RespostaUsuarioDTO>> {
+        val usuarios = servico.listarTodosUsuarios()
+        val respostaDTO = usuarios.map { RespostaUsuarioDTO.deModelo(it) }
+        return ResponseEntity.ok(respostaDTO)
+    }
+
     @GetMapping("/{id}")
     fun buscarUsuarioPorId(@PathVariable id: String): ResponseEntity<RespostaUsuarioDTO> {
         val usuario = servico.buscarUsuarioPorId(id)
@@ -44,5 +51,11 @@ class UsuarioController(
         val usuarioAtualizado = servico.atualizarDadosCadastrais(id, usuarioParaAtualizar)
         val respostaDTO = RespostaUsuarioDTO.deModelo(usuarioAtualizado)
         return ResponseEntity.ok(respostaDTO)
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun deletarUsuario(@PathVariable id: String) {
+        servico.deletarUsuario(id)
     }
 }

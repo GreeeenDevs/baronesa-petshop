@@ -121,4 +121,13 @@ class PedidoServiceImpl(
 
         return pedidoRepository.atualizarStatus(id, novoStatus)
     }
+
+    override fun listarTodosPedidos(): List<Pedido> {
+        return pedidoRepository.buscarTodos()
+    }
+
+    override fun deletarPedido(id: String) {
+        buscarPedidoPorId(id)
+        pedidoRepository.deletar(id)
+    }
 }

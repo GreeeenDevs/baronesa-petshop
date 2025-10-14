@@ -16,4 +16,6 @@ interface PedidoRepository {
     fun buscarTodos(): List<Pedido>
 
     fun atualizarStatus(id: String, novoStatus: StatusPedido): Pedido
+
+    fun deletar(id: String)
 }

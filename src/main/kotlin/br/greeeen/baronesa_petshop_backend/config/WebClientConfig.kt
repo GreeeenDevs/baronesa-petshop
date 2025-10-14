@@ -29,10 +29,7 @@ class WebClientConfig {
         return builder.codecs { it.defaultCodecs().maxInMemorySize(16 * 1024 * 1024) }.build()
     }
 
-    /**
-     * WebClient para integração com serviços externos de Frete (ex: Correios/Kangu).
-     */
-    @Bean(name = ["webClientFrete"])
+    //@Bean(name = ["webClientFrete"])
     fun webClientFrete(builder: WebClient.Builder): WebClient {
         return builder.baseUrl(urlFrete)
             .defaultHeader("Accept", "application/json")
@@ -40,10 +37,7 @@ class WebClientConfig {
             .build()
     }
 
-    /**
-     * WebClient para integração com o Gateway de Pagamento (ex: Mercado Pago).
-     */
-    @Bean(name = ["webClientPagamento"])
+    //@Bean(name = ["webClientPagamento"])
     fun webClientPagamento(builder: WebClient.Builder): WebClient {
         return builder.baseUrl(urlPagamento)
             .defaultHeader("Content-Type", "application/json")

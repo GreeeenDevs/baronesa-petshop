@@ -61,4 +61,8 @@ class PedidoRepositoryFirestore(
 
         return pedidoExistente.copy(status = novoStatus)
     }
+
+    override fun deletar(id: String) {
+        firestore.collection(NOMECOLECAO).document(id).delete().get()
+    }
 }

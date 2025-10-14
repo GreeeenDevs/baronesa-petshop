@@ -9,6 +9,7 @@ import br.greeeen.baronesa_petshop_backend.security.UserPrinciple
 import br.greeeen.baronesa_petshop_backend.service.PedidoService
 import br.greeeen.baronesa_petshop_backend.servico.UsuarioService
 import jakarta.validation.Valid
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
@@ -75,6 +76,13 @@ class PedidoController(
         return ResponseEntity.ok(respostaDTO)
     }
 
+    @GetMapping("/admin/todos")
+    fun listarTodosPedidos(): ResponseEntity<List<PedidoRespostaDTO>> {
+        val pedidos = pedidoService.listarTodosPedidos()
+        val respostaDTO = pedidos.map { PedidoRespostaDTO.deModelo(it) }
+        return ResponseEntity.ok(respostaDTO)
+    }
+
     @GetMapping("/{id}")
     fun buscarDetalheDoPedido(@PathVariable id: String): ResponseEntity<PedidoRespostaDTO> {
         val pedido = pedidoService.buscarPedidoPorId(id)
@@ -98,5 +106,11 @@ class PedidoController(
         val respostaDTO = PedidoRespostaDTO.deModelo(pedidoAtualizado)
 
         return ResponseEntity.ok(respostaDTO)
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun deletarPedido(@PathVariable id: String) {
+        pedidoService.deletarPedido(id)
     }
 }

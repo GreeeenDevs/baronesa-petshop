@@ -16,4 +16,8 @@ interface UsuarioService {
     fun removerEndereco(idUsuario: String, idEndereco: String): Usuario
 
     fun definirEnderecoPrincipal(idUsuario: String, idEndereco: String): Usuario
+
+    fun listarTodosUsuarios(): List<Usuario>
+
+    fun deletarUsuario(id: String)
 }

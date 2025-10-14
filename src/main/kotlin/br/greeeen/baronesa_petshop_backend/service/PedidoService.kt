@@ -21,4 +21,8 @@ interface PedidoService {
     fun listarPedidosPorUsuario(idUsuario: String): List<Pedido>
 
     fun atualizarStatusPedido(id: String, novoStatus: StatusPedido): Pedido
+
+    fun listarTodosPedidos(): List<Pedido>
+
+    fun deletarPedido(id: String)
 }

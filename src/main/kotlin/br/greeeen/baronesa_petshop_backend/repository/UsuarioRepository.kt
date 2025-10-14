@@ -12,4 +12,6 @@ interface UsuarioRepository {
     fun salvar(usuario: Usuario): Usuario
 
     fun deletar(id: String)
+
+    fun buscarTodos(): List<Usuario>
 }

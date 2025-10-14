@@ -113,4 +113,13 @@ class UsuarioServiceImplementation(
         val usuarioAtualizado = usuario.copy(enderecos = novaListaDeEnderecos)
         return repositorio.salvar(usuarioAtualizado)
     }
+
+    override fun listarTodosUsuarios(): List<Usuario> {
+        return repositorio.buscarTodos()
+    }
+
+    override fun deletarUsuario(id: String) {
+        buscarUsuarioPorId(id)
+        repositorio.deletar(id)
+    }
 }
