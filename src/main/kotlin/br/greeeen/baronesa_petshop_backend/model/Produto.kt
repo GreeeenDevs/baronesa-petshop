@@ -11,7 +11,7 @@ data class Produto(
 
     var nome: String = "",
     var descricao: String = "",
-    var preco: BigDecimal = BigDecimal.ZERO,
+    var preco: Double  = 0.0,
     var estoque: Int = 0,
     var categorias: List<String> = emptyList(),
     var fotos: List<String> = emptyList(),

@@ -17,7 +17,7 @@ class ProdutoServiceImpl(
         if (produto.nome.isBlank()) {
             throw NegocioException("O nome do produto é obrigatório.")
         }
-        if (produto.preco.compareTo(BigDecimal.ZERO) < 0) {
+        if (produto.preco < 0.0) {
             throw NegocioException("O preço do produto não pode ser negativo.")
         }
         if (produto.estoque < 0) {

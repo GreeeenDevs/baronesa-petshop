@@ -17,19 +17,23 @@ class ProdutoController(
     private val service: ProdutoService
 ) {
 
-
     @GetMapping
-    fun listarEFiltrarProdutos(filtroDTO: FiltroProdutoDTO): ResponseEntity<List<ProdutoRespostaDTO>> {
+    fun listarTodosProdutos(): ResponseEntity<List<ProdutoRespostaDTO>> {
+        val produtos = service.listarProdutos()
+        val respostaDTO = produtos.map { ProdutoRespostaDTO.deModelo(it) }
+        return ResponseEntity.ok(respostaDTO)
+    }
 
+    @PostMapping("/filtrar")
+    fun buscarProdutosPorFiltro(@RequestBody filtroDTO: FiltroProdutoDTO): ResponseEntity<List<ProdutoRespostaDTO>> {
         val produtos = service.buscarEFiltrarProdutos(filtroDTO.termo, filtroDTO.categorias)
         val respostaDTO = produtos.map { ProdutoRespostaDTO.deModelo(it) }
-
         return ResponseEntity.ok(respostaDTO)
     }
 
     @GetMapping("/{id}")
     fun buscarProdutoPorId(@PathVariable id: String): ResponseEntity<ProdutoRespostaDTO> {
-            val produto = service.buscarProdutoPorId(id)
+        val produto = service.buscarProdutoPorId(id)
         val respostaDTO = ProdutoRespostaDTO.deModelo(produto)
 
         if (produto.estoque <= 0) {

@@ -12,7 +12,7 @@ import java.util.Date
 data class ItemDoPedidoDTO(
     val idProduto: String,
     val nomeProduto: String,
-    val precoUnitario: BigDecimal,
+    val precoUnitario: Double,
     val quantidade: Int,
     val subtotal: BigDecimal
 ) {

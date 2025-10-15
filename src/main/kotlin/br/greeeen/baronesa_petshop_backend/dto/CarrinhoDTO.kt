@@ -9,7 +9,7 @@ import java.math.BigDecimal
 data class ItemCarrinhoDTO(
     val idProduto: String,
     val nomeProduto: String,
-    val precoUnitario: BigDecimal,
+    val precoUnitario: Double,
     val urlFoto: String?,
     val quantidade: Int,
     val subtotal: BigDecimal

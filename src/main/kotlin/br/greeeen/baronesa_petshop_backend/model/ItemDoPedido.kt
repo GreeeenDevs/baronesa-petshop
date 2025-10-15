@@ -7,11 +7,11 @@ import java.math.BigDecimal
 data class ItemDoPedido(
     var idProduto: String = "",
     var nomeProduto: String = "",
-    var precoUnitario: BigDecimal = BigDecimal.ZERO,
+    var precoUnitario: Double = 0.0,
     var urlFoto: String? = null,
     var quantidade: Int = 1
 ) {
     fun calcularSubtotal(): BigDecimal {
-        return precoUnitario.multiply(quantidade.toBigDecimal())
+        return precoUnitario.toBigDecimal().multiply(quantidade.toBigDecimal())
     }
 }

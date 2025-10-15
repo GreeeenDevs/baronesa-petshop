@@ -25,26 +25,31 @@ class SecurityConfig(
             }
             .authorizeHttpRequests { auth ->
                 auth
-                    // Endpoints Públicos
                     .requestMatchers(HttpMethod.POST, "/api/v1/clientes/registro").permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/v1/produtos/**").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/v1/produtos/filtrar").permitAll()
+                    .requestMatchers(
+                        "/swagger-ui.html",
+                        "/swagger-ui/**",
+                        "/v3/api-docs/**",
+                        "/swagger-resources/**",
+                        "/webjars/**"
+                    ).permitAll()
 
                     // Endpoints de Administrador
-                    .requestMatchers(HttpMethod.POST, "/api/v1/produtos/**").hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.PUT, "/api/v1/produtos/**").hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.PATCH, "/api/v1/produtos/**").hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.DELETE, "/api/v1/produtos/**").hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.GET, "/api/v1/clientes").hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.DELETE, "/api/v1/clientes/**").hasRole("ADMIN")
-                    .requestMatchers("/api/v1/pedidos/admin/**").hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.DELETE, "/api/v1/pedidos/**").hasRole("ADMIN")
-
+                    .requestMatchers(HttpMethod.POST, "/api/v1/produtos/**").permitAll() //.hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.PUT, "/api/v1/produtos/**").permitAll() //.hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.PATCH, "/api/v1/produtos/**").permitAll() //.hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.DELETE, "/api/v1/produtos/**").permitAll() //.hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.GET, "/api/v1/clientes").permitAll() //.hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.DELETE, "/api/v1/clientes/**").permitAll() //.hasRole("ADMIN")
+                    .requestMatchers("/api/v1/pedidos/admin/**").permitAll() //.hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.DELETE, "/api/v1/pedidos/**").permitAll() //.hasRole("ADMIN")
 
                     // Endpoints de Cliente e Administrador
-                    .requestMatchers("/api/v1/clientes/**").hasAnyRole("CLIENTE", "ADMIN")
-                    .requestMatchers("/api/v1/carrinho/**").hasAnyRole("CLIENTE", "ADMIN")
-                    .requestMatchers("/api/v1/pedidos/**").hasAnyRole("CLIENTE", "ADMIN")
-
+                    .requestMatchers("/api/v1/clientes/**").permitAll() //.hasAnyRole("CLIENTE", "ADMIN")
+                    .requestMatchers("/api/v1/carrinho/**").permitAll() //.hasAnyRole("CLIENTE", "ADMIN")
+                    .requestMatchers("/api/v1/pedidos/**").permitAll() //.hasAnyRole("CLIENTE", "ADMIN")
 
                     .anyRequest().authenticated()
             }
@@ -64,3 +69,7 @@ class SecurityConfig(
         return http.build()
     }
 }
+
+
+
+
