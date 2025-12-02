@@ -3,6 +3,14 @@ plugins {
 	kotlin("plugin.spring") version "1.9.25"
 	id("org.springframework.boot") version "3.3.0"
 	id("io.spring.dependency-management") version "1.1.7"
+
+	// Plugin JaCoCo para geração de relatório de cobertura
+	id("jacoco")
+}
+
+// config para JaCoCo
+jacoco {
+	toolVersion = "0.8.11"
 }
 
 group = "br.greeeen"
@@ -39,6 +47,9 @@ dependencies {
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	implementation("com.google.firebase:firebase-admin:9.2.0")
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
+
+	// Dependência para Unit Tests Mocking
+	testImplementation("io.mockk:mockk:1.13.11")
 }
 
 kotlin {
@@ -53,4 +64,9 @@ tasks.named<org.springframework.boot.gradle.tasks.run.BootRun>("bootRun") {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+// Configura a tarefa de relatório de teste
+tasks.test {
+	finalizedBy(tasks.jacocoTestReport)
 }
